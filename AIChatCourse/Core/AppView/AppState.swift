@@ -1,6 +1,13 @@
+//
+//  AppState.swift
+//  AIChatCourse
+//
+//  Created by YEN-JU HUANG on 2025/11/4.
+//
+import SwiftUI
+
 @Observable
 class AppState {
-    
     private(set) var showTabBar: Bool {
         didSet {
             UserDefaults.showTabbarView = showTabBar
@@ -17,7 +24,6 @@ class AppState {
 }
 
 extension UserDefaults {
-    
     private struct Keys {
         static let showTabbarView = "showTabbarView"
     }

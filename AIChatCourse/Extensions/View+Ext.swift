@@ -7,12 +7,14 @@
 
 import SwiftUI
 
-struct View_Ext: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+extension View {
+    func callToActionButton() -> some View {
+        self
+            .font(.headline)
+            .foregroundStyle(.white)
+            .frame(maxWidth: .infinity)
+            .frame(height: 55.0)
+            .background(.accent)
+            .cornerRadius(16)
     }
-}
-
-#Preview {
-    View_Ext()
 }

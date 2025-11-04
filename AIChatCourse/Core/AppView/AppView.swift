@@ -7,37 +7,28 @@
 
 import SwiftUI
 
-// tabbar - signed in
-// onboarding - signed out
-
 struct AppView: View {
-    
-    @AppStorage("showTabbarView") var showTabBar: Bool = false
+    @State var appState: AppState = AppState()
     
     var body: some View {
         AppViewBuilder(
-            showTabBar: showTabBar,
+            showTabBar: appState.showTabBar,
             tabbarView: {
-                ZStack {
-                    Color.red.ignoresSafeArea()
-                    Text("Tabbar")
-                }
+                TabBarView()
             },
             onboardingView: {
-                ZStack {
-                    Color.blue.ignoresSafeArea()
-                    Text("Onboarding")
-                }
+                WelcomeView()
             }
         )
+        .environment(appState)
     }
 }
 
 #Preview("AppView - tabbar") {
-    AppView(showTabBar: true)
+    AppView(appState: AppState(showTabBar: true))
 }
 
 #Preview("AppView - onboarding") {
-    AppView(showTabBar: false)
+    AppView(appState: AppState(showTabBar: false))
 }
 
