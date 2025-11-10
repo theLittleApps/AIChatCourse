@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct AvataModel {
+struct AvataModel: Hashable {
     
     let avataId: String
     let name: String?
