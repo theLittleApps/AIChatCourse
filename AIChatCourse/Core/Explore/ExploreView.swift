@@ -8,10 +8,18 @@
 import SwiftUI
 
 struct ExploreView: View {
+    
+    let avata = AvataModel.mock
+    
     var body: some View {
         NavigationStack {
-            Text("Explore")
-                .navigationTitle("Explore")
+            HeroCellView(
+                title: avata.name,
+                subtitle: avata.characterDescription,
+                imageName: avata.profileImageName
+            )
+            .frame(height: 200)
+            .navigationTitle("Explore")
         }
     }
 }
