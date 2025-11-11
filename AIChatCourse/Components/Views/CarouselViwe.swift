@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct CarouselViwe<Content: View, T: Hashable>: View {
-    
+    // input parameters
     var items: [T]
     @ViewBuilder var content: (T) -> Content
-    @State private var selection: T?
     
+    @State private var selection: T?
     var body: some View {
         VStack(spacing: 8) {
             ScrollView(.horizontal) {
