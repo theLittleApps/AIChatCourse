@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct CarouselViwe<Content: View, T: Hashable>: View {
-    // input parameters
     var items: [T]
     @ViewBuilder var content: (T) -> Content
     
