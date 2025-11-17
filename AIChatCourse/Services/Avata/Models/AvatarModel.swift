@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct AvataModel: Hashable {
+struct AvatarModel: Hashable {
     
     let avataId: String
     let name: String?
@@ -41,16 +41,16 @@ struct AvataModel: Hashable {
         AvataDescriptionBuilder(avata: self).characterDescription
     }
     
-    static var mock: AvataModel {
+    static var mock: AvatarModel {
         mocks[0]
     }
     
-    static var mocks: [AvataModel] {
+    static var mocks: [AvatarModel] {
         [
-            AvataModel(avataId: UUID().uuidString, name: "Alpha", characterOption: .alien, characterAction: .smiling, characterLocation: .park, profileImageName: Constants.randomImage, authorId: UUID().uuidString, dateCreated: .now),
-            AvataModel(avataId: UUID().uuidString, name: "Beta", characterOption: .dog, characterAction: .eating, characterLocation: .forest, profileImageName: Constants.randomImage, authorId: UUID().uuidString, dateCreated: .now),
-            AvataModel(avataId: UUID().uuidString, name: "Gamma", characterOption: .cat, characterAction: .drinking, characterLocation: .museum, profileImageName: Constants.randomImage, authorId: UUID().uuidString, dateCreated: .now),
-            AvataModel(avataId: UUID().uuidString, name: "Delta", characterOption: .woman, characterAction: .shopping, characterLocation: .mall, profileImageName: Constants.randomImage, authorId: UUID().uuidString, dateCreated: .now)
+            AvatarModel(avataId: UUID().uuidString, name: "Alpha", characterOption: .alien, characterAction: .smiling, characterLocation: .park, profileImageName: Constants.randomImage, authorId: UUID().uuidString, dateCreated: .now),
+            AvatarModel(avataId: UUID().uuidString, name: "Beta", characterOption: .dog, characterAction: .eating, characterLocation: .forest, profileImageName: Constants.randomImage, authorId: UUID().uuidString, dateCreated: .now),
+            AvatarModel(avataId: UUID().uuidString, name: "Gamma", characterOption: .cat, characterAction: .drinking, characterLocation: .museum, profileImageName: Constants.randomImage, authorId: UUID().uuidString, dateCreated: .now),
+            AvatarModel(avataId: UUID().uuidString, name: "Delta", characterOption: .woman, characterAction: .shopping, characterLocation: .mall, profileImageName: Constants.randomImage, authorId: UUID().uuidString, dateCreated: .now)
         ]
     }
 }
@@ -66,7 +66,7 @@ struct AvataDescriptionBuilder {
         self.characterLocation = characterLocation
     }
     
-    init(avata: AvataModel) {
+    init(avata: AvatarModel) {
         self.characterOption = avata.characterOption ?? .default
         self.characterAction = avata.characterAction ?? .default
         self.characterLocation = avata.characterLocation ?? .desert

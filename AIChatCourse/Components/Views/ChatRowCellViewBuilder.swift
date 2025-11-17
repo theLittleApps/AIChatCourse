@@ -11,10 +11,10 @@ struct ChatRowCellViewBuilder: View {
     
     var currentUserId: String? = ""
     var chat: ChatModel = .mock
-    var getAvatar: () async -> AvataModel?
+    var getAvatar: () async -> AvatarModel?
     var getLastChatMessage: () async -> ChatMessageModel?
     
-    @State private var avatar: AvataModel?
+    @State private var avatar: AvatarModel?
     @State private var lastChatMessage: ChatMessageModel?
     
     @State private var didLoadAvatar: Bool = false

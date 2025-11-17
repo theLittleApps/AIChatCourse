@@ -9,9 +9,9 @@ import SwiftUI
 
 struct ExploreView: View {
     
-    @State private var featureAvatars: [AvataModel] = AvataModel.mocks
+    @State private var featureAvatars: [AvatarModel] = AvatarModel.mocks
     @State private var categories: [CharacterOption] = CharacterOption.allCases
-    @State private var popularAvatars: [AvataModel] = AvataModel.mocks
+    @State private var popularAvatars: [AvatarModel] = AvatarModel.mocks
     
     var body: some View {
         NavigationStack {
