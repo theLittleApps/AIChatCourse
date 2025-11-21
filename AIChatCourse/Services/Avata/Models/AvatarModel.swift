@@ -38,7 +38,7 @@ struct AvatarModel: Hashable {
     }
     
     var characterDescription: String {
-        AvataDescriptionBuilder(avata: self).characterDescription
+        AvatarDescriptionBuilder(avata: self).characterDescription
     }
     
     static var mock: AvatarModel {
@@ -52,61 +52,5 @@ struct AvatarModel: Hashable {
             AvatarModel(avataId: UUID().uuidString, name: "Gamma", characterOption: .cat, characterAction: .drinking, characterLocation: .museum, profileImageName: Constants.randomImage, authorId: UUID().uuidString, dateCreated: .now),
             AvatarModel(avataId: UUID().uuidString, name: "Delta", characterOption: .woman, characterAction: .shopping, characterLocation: .mall, profileImageName: Constants.randomImage, authorId: UUID().uuidString, dateCreated: .now)
         ]
-    }
-}
-
-struct AvataDescriptionBuilder {
-    let characterOption: CharacterOption
-    let characterAction: CharacterAction
-    let characterLocation: CharacterLocation
-    
-    init(characterOption: CharacterOption, characterAction: CharacterAction, characterLocation: CharacterLocation) {
-        self.characterOption = characterOption
-        self.characterAction = characterAction
-        self.characterLocation = characterLocation
-    }
-    
-    init(avata: AvatarModel) {
-        self.characterOption = avata.characterOption ?? .default
-        self.characterAction = avata.characterAction ?? .default
-        self.characterLocation = avata.characterLocation ?? .desert
-    }
-    
-    var characterDescription: String {
-        let prefix = characterOption.startsWithVowel ? "An" : "A"
-        return "\(prefix) \(characterOption.rawValue) that is \(characterAction.rawValue) in the \(characterLocation.rawValue)."
-    }
-}
-
-enum CharacterOption: String, CaseIterable, Hashable {
-    case man, woman, alien, dog, cat
-    
-    static var `default`: Self {
-        .man
-    }
-    
-    var startsWithVowel: Bool {
-        switch self {
-        case .alien:
-            return true
-        default:
-            return false
-        }
-    }
-}
-
-enum CharacterAction: String {
-    case smiling, sitting, eating, drinking, walking, shopping, studying, working, relaxing, fighting, crying
-    
-    static var `default`: Self {
-        .smiling
-    }
-}
-
-enum CharacterLocation: String {
-    case park, mall, museum, city, desert, forest, space
-    
-    static var `default`: Self {
-        .park
     }
 }
