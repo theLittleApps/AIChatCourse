@@ -16,6 +16,8 @@ struct ChatView: View {
     
     @State private var showChatSetting: Bool = false
     @State private var scrollPosition: String?
+    @State private var showAlert: Bool = false
+    @State private var alertTitle: String = ""
     
     var body: some View {
         VStack(spacing: 0) {
@@ -47,6 +49,13 @@ struct ChatView: View {
             }
         } message: {
             Text("What would you like to do?")
+        }
+        .alert(alertTitle, isPresented: $showAlert) {
+            Button("OK") {
+                
+            }
+        } message: {
+            Text("")
         }
     }
     
@@ -107,20 +116,28 @@ struct ChatView: View {
         
         let content = textFieldText
         
-        let message = ChatMessageModel(
-            id: UUID().uuidString,
-            chatId: UUID().uuidString,
-            authorId: currentUser.userId,
-            content: content,
-            seenByIds: nil,
-            dateCreated: .now
-        )
-        
-        chatMessages.append(message)
-        
-        scrollPosition = message.id
-        
-        textFieldText = ""
+        do {
+            try TextValidationHelper.checkIfTextIsValid(text: content)
+            
+            let message = ChatMessageModel(
+                id: UUID().uuidString,
+                chatId: UUID().uuidString,
+                authorId: currentUser.userId,
+                content: content,
+                seenByIds: nil,
+                dateCreated: .now
+            )
+            
+            chatMessages.append(message)
+            
+            scrollPosition = message.id
+            
+            textFieldText = ""
+        } catch let error {
+            // show an error
+            alertTitle = error.localizedDescription
+            showAlert = true
+        }
     }
     
     private func onChatSettingPressed() {
