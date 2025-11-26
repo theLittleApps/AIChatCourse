@@ -14,10 +14,10 @@ struct ChatView: View {
     @State private var currentUser: UserModel? = .mock
     @State private var textFieldText: String = ""
     
-    @State private var showChatSetting: Bool = false
     @State private var scrollPosition: String?
-    @State private var showAlert: Bool = false
-    @State private var alertTitle: String = ""
+    
+    @State private var showAlert: AnyAppAlert?
+    @State private var showChatSetting: AnyAppAlert?
     
     var body: some View {
         VStack(spacing: 0) {
@@ -35,28 +35,8 @@ struct ChatView: View {
                     }
             }
         }
-        .confirmationDialog("", isPresented: $showChatSetting) {
-            Button(role: .destructive) {
-                
-            } label: {
-                Text("Report User / Chat")
-            }
-            
-            Button(role: .destructive) {
-                
-            } label: {
-                Text("Delete Chat")
-            }
-        } message: {
-            Text("What would you like to do?")
-        }
-        .alert(alertTitle, isPresented: $showAlert) {
-            Button("OK") {
-                
-            }
-        } message: {
-            Text("")
-        }
+        .showCustomAlert(type: .confirmationDialog, alert: $showChatSetting)
+        .showCustomAlert(alert: $showAlert)
     }
     
     private var scrollViewSection: some View {
@@ -133,15 +113,28 @@ struct ChatView: View {
             scrollPosition = message.id
             
             textFieldText = ""
-        } catch let error {
-            // show an error
-            alertTitle = error.localizedDescription
-            showAlert = true
+        } catch {
+            showAlert = AnyAppAlert(error: error)
         }
     }
     
     private func onChatSettingPressed() {
-        showChatSetting = true
+        showChatSetting = AnyAppAlert(
+            title: "",
+            subtitle: "What would you like to do?",
+            buttons: {
+                AnyView(
+                    Group {
+                        Button("Report User / Chat", role: .destructive) {
+                            
+                        }
+                        Button("Delete Chat", role: .destructive) {
+                            
+                        }
+                    }
+                )
+            }
+        )
     }
 }
 
