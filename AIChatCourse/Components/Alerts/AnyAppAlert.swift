@@ -34,7 +34,6 @@ struct AnyAppAlert: Sendable {
     }
 }
 
-
 enum AlertType {
     case alert, confirmationDialog
 }

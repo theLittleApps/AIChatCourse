@@ -18,11 +18,19 @@ struct ChatView: View {
     
     @State private var showAlert: AnyAppAlert?
     @State private var showChatSetting: AnyAppAlert?
+    @State private var showProfileModal: Bool = false
     
     var body: some View {
-        VStack(spacing: 0) {
-            scrollViewSection
-            textFieldSection
+        ZStack {
+            VStack(spacing: 0) {
+                scrollViewSection
+                textFieldSection
+            }
+            
+            if showProfileModal {
+                ProfileModalView()
+                    .padding(40)
+            }
         }
         .navigationTitle(avatar?.name ?? "Chat")
         .toolbarTitleDisplayMode(.inline)
