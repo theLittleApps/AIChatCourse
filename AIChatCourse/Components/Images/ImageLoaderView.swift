@@ -11,10 +11,11 @@ import SDWebImageSwiftUI
 struct ImageLoaderView: View {
     var urlString: String = Constants.randomImage
     var resizingMode: ContentMode = .fill
+    var forceTransitionAnimation: Bool = false
     
     var body: some View {
         Rectangle()
-            .opacity(0.0001)
+            .opacity(0.5)
             .overlay(
                 WebImage(url: URL(string: urlString))
                     .resizable()
@@ -22,6 +23,10 @@ struct ImageLoaderView: View {
                     .aspectRatio(contentMode: resizingMode)
             )
             .clipped()
+            .ifSatisfiedCondition(forceTransitionAnimation) { content in
+                content
+                    .drawingGroup()
+            }
     }
 }
 
