@@ -31,14 +31,16 @@ struct AppView: View {
     private func checkUserState() async {
         if let user = authService.getAuthenticatedUser() {
             // user is authenticated
-            
+            print("User is authenticated: \(user.uid)")
         } else {
             // user is not authenticated
             do {
                 let result = try await authService.signInAnonymously()
                 
+                // login to app
+                print("Sign in anonymous success: \(result.user.uid)")
             } catch {
-                
+                print(error.localizedDescription)
             }
         }
     }
