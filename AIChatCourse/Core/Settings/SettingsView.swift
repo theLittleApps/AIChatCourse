@@ -11,11 +11,13 @@ import SwiftfulUtilities
 struct SettingsView: View {
     
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.authService) private var authService
     @Environment(AppState.self) private var appState
     
     @State private var isPremium: Bool = true
     @State private var isAnoymousUser: Bool = false
     @State private var showCreateAccountView: Bool = false
+    @State private var showAlert: AnyAppAlert?
     
     var body: some View {
         NavigationStack {
@@ -25,26 +27,21 @@ struct SettingsView: View {
                 applicationSection
             }
             .navigationTitle("Settings")
-            .sheet(isPresented: $showCreateAccountView) {
-                CreateAccountView()
-                    .presentationDetents([.medium])
+            .sheet(
+                isPresented: $showCreateAccountView,
+                onDismiss: {
+                    setAnonymousAccountStatus()
+                },
+                content: {
+                    CreateAccountView()
+                        .presentationDetents([.medium])
+                }
+            )
+            .onAppear {
+                setAnonymousAccountStatus()
             }
+            .showCustomAlert(alert: $showAlert)
         }
-    }
-    
-    func onSignOutPressed() {
-        // do some logic to sign user out of app
-        
-        dismiss()
-        
-        Task {
-            try? await Task.sleep(for: .seconds(1.0))
-            appState.updateViewState(showTabBarView: false)
-        }
-    }
-    
-    func onCreateAccountPressed() {
-        showCreateAccountView = true
     }
     
     private var accountSection: some View {
@@ -69,7 +66,7 @@ struct SettingsView: View {
                 .foregroundStyle(.red)
                 .rowFormatting()
                 .anyButton(.highlight) {
-                    
+                    onDeleteAccountPressed()
                 }
                 .removeListRowFormatting()
         } header: {
@@ -132,6 +129,56 @@ struct SettingsView: View {
             Text("Created by The Little Apps.\n Learn more at www.thelittleapps.com.")
                 .baselineOffset(4)
         }
+    }
+    
+    func setAnonymousAccountStatus() {
+        isAnoymousUser = authService.getAuthenticatedUser()?.isAnonymous == true
+    }
+    
+    func onSignOutPressed() {
+        Task {
+            do {
+                try authService.signOut()
+                await dismissScreen()
+            } catch {
+                showAlert = AnyAppAlert(error: error)
+            }
+        }
+    }
+    
+    private func dismissScreen() async {
+        dismiss()
+        try? await Task.sleep(for: .seconds(1.0))
+        appState.updateViewState(showTabBarView: false)
+    }
+    
+    func onDeleteAccountPressed() {
+        showAlert = AnyAppAlert(
+            title: "Delete Account?",
+            subtitle: "This action is permanent and cannot be undone. Your data will be deleted from our server forever.",
+            buttons: {
+                AnyView(
+                    Button("Delete", role: .destructive, action: {
+                        onDeleteAccountConfirmed()
+                    })
+                )
+            }
+        )
+    }
+    
+    private func onDeleteAccountConfirmed() {
+        Task {
+            do {
+                try await authService.deleteAccount()
+                await dismissScreen()
+            } catch {
+                showAlert = AnyAppAlert(error: error)
+            }
+        }
+    }
+    
+    func onCreateAccountPressed() {
+        showCreateAccountView = true
     }
 }
 
