@@ -8,7 +8,7 @@
 import FirebaseAuth
 
 extension UserAuthInfo {
-    
+    // Firebase user object
     init(user: User) {
         self.uid = user.uid
         self.email = user.email
