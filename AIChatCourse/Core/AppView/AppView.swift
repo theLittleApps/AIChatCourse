@@ -10,6 +10,7 @@ import SwiftUI
 struct AppView: View {
     
     @Environment(AuthManager.self) private var authManager
+    @Environment(UserManager.self) private var userManager
     @State var appState: AppState = AppState()
     
     var body: some View {
@@ -39,6 +40,15 @@ struct AppView: View {
         if let user = authManager.auth {
             // user is authenticated
             print("User is authenticated: \(user.uid)")
+            
+            do {
+                try await userManager.login(auth: user, isNewUser: false)
+            } catch {
+                print("Failed to log in to auth for existing user: \(error)")
+                try? await Task.sleep(for: .seconds(5))
+                await checkUserState()
+            }
+            
         } else {
             // user is not authenticated
             do {
@@ -46,8 +56,14 @@ struct AppView: View {
                 
                 // login to app
                 print("Sign in anonymous success: \(result.user.uid)")
+                
+                // log in
+                try await userManager.login(auth: result.user, isNewUser: result.isNewUser)
+                
             } catch {
-                print(error.localizedDescription)
+                print("Failed to sign in anonymously and log in: \(error)")
+                try? await Task.sleep(for: .seconds(5))
+                await checkUserState()
             }
         }
     }

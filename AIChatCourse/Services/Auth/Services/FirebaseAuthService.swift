@@ -25,8 +25,7 @@ struct FirebaseAuthService: AuthService {
             onListenerAttached(listener)
         }
     }
-    
-    
+        
     func getAuthenticatedUser() -> UserAuthInfo? {
         if let user = Auth.auth().currentUser {
             return UserAuthInfo(user: user)
