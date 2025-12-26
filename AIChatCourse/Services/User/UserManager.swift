@@ -10,14 +10,18 @@ import SwiftfulUtilities
 import FirebaseFirestore
 import SwiftfulFirestore
 
-protocol UserService: Sendable {
+protocol LocalUserService {
+    
+}
+
+protocol RemoteUserService: Sendable {
     func saveUser(user: UserModel) async throws
     func markOnboardingCompleted(userId: String, profilColorHex: String) async throws
     func streamUser(userId: String) -> AsyncThrowingStream<UserModel, Error>
     func delectUser(userId: String) async throws
 }
 
-struct FirebaseUserService: UserService {
+struct FirebaseUserService: RemoteUserService {
     
     var collection: CollectionReference {
         Firestore.firestore().collection("users")
@@ -30,7 +34,7 @@ struct FirebaseUserService: UserService {
     func markOnboardingCompleted(userId: String, profilColorHex: String) async throws {
         try await collection.document(userId).updateData([
             UserModel.CodingKeys.didCompleteOnboarding.rawValue: true,
-            UserModel.CodingKeys.profileColorHex.rawValue: profilColorHex,
+            UserModel.CodingKeys.profileColorHex.rawValue: profilColorHex
         ])
     }
     
@@ -43,7 +47,7 @@ struct FirebaseUserService: UserService {
     }
 }
 
-struct MockUserService: UserService {
+struct MockUserService: RemoteUserService {
     
     let currentUser: UserModel?
     
@@ -75,10 +79,10 @@ struct MockUserService: UserService {
 @Observable
 class UserManager {
     
-    private let service: UserService
+    private let service: RemoteUserService
     private(set) var currentUser: UserModel?
     
-    init(service: UserService) {
+    init(service: RemoteUserService) {
         self.service = service
         self.currentUser = nil
     }
