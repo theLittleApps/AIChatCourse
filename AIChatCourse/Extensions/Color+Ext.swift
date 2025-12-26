@@ -1,59 +1,61 @@
 //
-//  Color+Ext.swift
+//  Color+EXT.swift
 //  AIChatCourse
 //
-//  Created by YEN-JU HUANG on 2025/11/17.
+//  Created by Nick Sarno on 10/9/24.
 //
-
 import SwiftUI
 
-extension Color {
-    
-    /// Initialize Color from hex string like "#FFAA00" or "FFAA00"
-    init(hex: String) {
-        let cleaned = hex
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-            .replacingOccurrences(of: "#", with: "")
-        
-        var hexString = cleaned
-        
-        // Expand shorthand "FA0" -> "FFAA00"
-        if cleaned.count == 3 {
-            hexString = cleaned.map { "\($0)\($0)" }.joined()
-        }
-        
-        var int: UInt64 = 0
-        Scanner(string: hexString).scanHexInt64(&int)
-        
-        let red, green, blue: Double
-        red = Double((int >> 16) & 0xFF) / 255.0
-        green = Double((int >> 8) & 0xFF) / 255.0
-        blue = Double(int & 0xFF) / 255.0
+public extension Color {
 
-        self.init(red: red, green: green, blue: blue)
+    init(hex: String) {
+        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        var int: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&int)
+        let alpha, red, green, blue: UInt64
+        switch hex.count {
+        case 3: // RGB (12-bit)
+            (alpha, red, green, blue) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
+        case 6: // RGB (24-bit)
+            (alpha, red, green, blue) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
+        case 8: // ARGB (32-bit)
+            (alpha, red, green, blue) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
+        default:
+            (alpha, red, green, blue) = (255, 0, 0, 0)
+        }
+
+        self.init(.sRGB, red: Double(red) / 255, green: Double(green) / 255, blue: Double(blue) / 255, opacity: Double(alpha) / 255)
     }
-    
-    /// Convert Color to "#RRGGBB" hex string
-    func toHex() -> String? {
-        #if os(iOS)
+
+    func asHex(alpha: Bool = false) -> String {
+        // Convert Color to UIColor
         let uiColor = UIColor(self)
-        
+
         var red: CGFloat = 0
         var green: CGFloat = 0
         var blue: CGFloat = 0
-        var alpha: CGFloat = 0
-        
-        guard uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha) else {
-            return nil
+        var alphaValue: CGFloat = 0
+
+        // Use guard to ensure all components can be extracted
+        guard uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alphaValue) else {
+            // Return a default color (black or transparent) if unable to extract components
+            return alpha ? "#00000000": "#000000"
         }
-        
-        let RED = Int(red * 255)
-        let GREEN = Int(green * 255)
-        let BLUE = Int(blue * 255)
-        
-        return String(format: "#%02X%02X%02X", RED, GREEN, BLUE)
-        #else
-        return nil
-        #endif
+
+        if alpha {
+            // Include alpha component in the hex string
+            return String(format: "#%02lX%02lX%02lX%02lX",
+                          lroundf(Float(alphaValue) * 255),
+                          lroundf(Float(red) * 255),
+                          lroundf(Float(green) * 255),
+                          lroundf(Float(blue) * 255))
+        } else {
+            // Exclude alpha component from the hex string
+            return String(format: "#%02lX%02lX%02lX",
+                          lroundf(Float(red) * 255),
+                          lroundf(Float(green) * 255),
+                          lroundf(Float(blue) * 255))
+        }
     }
 }
+

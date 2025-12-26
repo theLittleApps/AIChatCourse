@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		791E0FC72EF1325A0024D27A /* SignInAppleAsync in Frameworks */ = {isa = PBXBuildFile; productRef = 791E0FC62EF1325A0024D27A /* SignInAppleAsync */; };
+		795D22852EFE54F7003FFBFF /* SwiftfulFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 795D22842EFE54F7003FFBFF /* SwiftfulFirestore */; };
 		796B00052ECC3EFC001054E4 /* SwiftfulUtilities in Frameworks */ = {isa = PBXBuildFile; productRef = 796B00042ECC3EFC001054E4 /* SwiftfulUtilities */; };
 		7992C22D2EB9F21B00D97ED0 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7992C22C2EB9F21B00D97ED0 /* SDWebImageSwiftUI */; };
 		799B34CA2EFB942D00D6F113 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 799B34C92EFB942D00D6F113 /* FirebaseFirestore */; };
@@ -62,6 +63,7 @@
 			files = (
 				791E0FC72EF1325A0024D27A /* SignInAppleAsync in Frameworks */,
 				7992C22D2EB9F21B00D97ED0 /* SDWebImageSwiftUI in Frameworks */,
+				795D22852EFE54F7003FFBFF /* SwiftfulFirestore in Frameworks */,
 				79CA470D2EDD89F700310ABC /* FirebaseAuth in Frameworks */,
 				799B34CA2EFB942D00D6F113 /* FirebaseFirestore in Frameworks */,
 				796B00052ECC3EFC001054E4 /* SwiftfulUtilities in Frameworks */,
@@ -139,6 +141,7 @@
 				79CA470C2EDD89F700310ABC /* FirebaseAuth */,
 				791E0FC62EF1325A0024D27A /* SignInAppleAsync */,
 				799B34C92EFB942D00D6F113 /* FirebaseFirestore */,
+				795D22842EFE54F7003FFBFF /* SwiftfulFirestore */,
 			);
 			productName = AIChatCourse;
 			productReference = 79D90CE82EB32DCA00A6C720 /* AIChatCourse.app */;
@@ -227,6 +230,7 @@
 				796B00032ECC3EFC001054E4 /* XCRemoteSwiftPackageReference "SwiftfulUtilities" */,
 				79CA470B2EDD89F700310ABC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				791E0FC52EF1325A0024D27A /* XCRemoteSwiftPackageReference "SignInAppleAsync" */,
+				795D22832EFE54F7003FFBFF /* XCRemoteSwiftPackageReference "SwiftfulFirestore" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 79D90CE92EB32DCA00A6C720 /* Products */;
@@ -661,6 +665,14 @@
 				minimumVersion = 1.0.2;
 			};
 		};
+		795D22832EFE54F7003FFBFF /* XCRemoteSwiftPackageReference "SwiftfulFirestore" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftfulThinking/SwiftfulFirestore.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.0.4;
+			};
+		};
 		796B00032ECC3EFC001054E4 /* XCRemoteSwiftPackageReference "SwiftfulUtilities" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SwiftfulThinking/SwiftfulUtilities.git";
@@ -692,6 +704,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 791E0FC52EF1325A0024D27A /* XCRemoteSwiftPackageReference "SignInAppleAsync" */;
 			productName = SignInAppleAsync;
+		};
+		795D22842EFE54F7003FFBFF /* SwiftfulFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 795D22832EFE54F7003FFBFF /* XCRemoteSwiftPackageReference "SwiftfulFirestore" */;
+			productName = SwiftfulFirestore;
 		};
 		796B00042ECC3EFC001054E4 /* SwiftfulUtilities */ = {
 			isa = XCSwiftPackageProductDependency;
